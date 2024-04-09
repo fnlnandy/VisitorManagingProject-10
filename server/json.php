@@ -20,7 +20,7 @@ class JsonObject
     }
     public function wipe(): void
     {
-        $this->mCore = null;
+        $this->mCore = array();
     }
 }
 ?>
