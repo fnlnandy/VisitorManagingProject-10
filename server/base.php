@@ -118,6 +118,50 @@ class Base {
 		Base::CreateDatabase();
 		Base::CreateTables();
 	}
+
+	/**
+	 * Shortcut function to set some JSON data
+	 * in $gResponse
+	 */
+	public static function SetResponseData(string $field, mixed $value)
+	{
+		global $gResponse;
+
+		$gResponse->setData($field, $value);
+	}
+
+	/**
+	 * Shortcut function to set some JSON array
+	 * in $gResponse
+	 */
+	public static function SetResponseArray(string $field, array $array)
+	{
+		global $gResponse;
+
+		$gResponse->setArray($field, $array);
+	}
+
+	/**
+	 * 'Sends' the JSON response back to the client
+	 */
+	public static function SendJSONResponse()
+	{
+		global $gResponse;
+
+		echo($gResponse->toJson());
+	}
+
+	/**
+	 * Wipes the response data, useful when used inside
+	 * other .php files that don't necessarily need the
+	 * previous data
+	 */
+	public static function WipeResponseData()
+	{
+		global $gResponse;
+
+		$gResponse->wipe();
+	}
 }
 
 if (isset($gReceived["init"]) && $gReceived["init"] == "true") {
