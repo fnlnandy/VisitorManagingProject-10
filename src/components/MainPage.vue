@@ -35,6 +35,7 @@ export default {
         }
 
         console.log("Getting the request response into JSON...");
+      
         return response.json();
       })
       .then(data => {
@@ -50,7 +51,7 @@ export default {
         init: true
       };
 
-      this.sendFetchRequest("http://localhost/phpdir/exo10/server/base.php", data);
+      this.sendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", data);
     }
   },
   created() {
