@@ -44,7 +44,7 @@ class JsonObject
      */
     public function wipe(): void
     {
-        $this->mCore = array();
+        $this->mCore = [];
     }
 }
 ?>
