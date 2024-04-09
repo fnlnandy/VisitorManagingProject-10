@@ -28,11 +28,13 @@ export default {
     sendFetchRequest(dest, formData) {
       console.log("Preparing fetch request to: ", dest, "With data: ", formData);
       
-      fetch (dest, {method: 'POST', body: formData})
+      fetch (dest, {method: 'POST', body: JSON.stringify(formData)})
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response wasn't ok.");
         }
+
+        console.log("Getting the request response into JSON...");
         return response.json();
       })
       .then(data => {
@@ -44,7 +46,11 @@ export default {
     },
     initPage() {
       console.log("In init page.");
-      this.sendFetchRequest("http://localhost/phpdir/exo10/server/base.php", {});
+      var data = {
+        init: true
+      };
+
+      this.sendFetchRequest("http://localhost/phpdir/exo10/server/base.php", data);
     }
   },
   created() {

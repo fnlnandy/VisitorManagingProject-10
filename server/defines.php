@@ -9,7 +9,7 @@ define("gPassword", "");
 /**
  * Default database name
  */
-define("gDatabaseName", "vue-project-db");
+define("gDatabaseName", "VUEPROJECTDB");
 
 /**
  * Default fields in the 'Visiteur' table

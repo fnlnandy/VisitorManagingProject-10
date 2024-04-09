@@ -1,8 +1,13 @@
 <?php
 header("Access-Control-Allow-Origin: http://localhost:8080");
+header("Content-Type: application/json");
+
 include_once("defines.php");
+include_once("json.php");
 
 $gSqlConnection = new mysqli(gHostName, gUserName, gPassword);
+$gResponse = new JsonObject();
+$gReceived = Base::DecodeInputAsAssoc();
 
 class Base {
 	/**
@@ -23,17 +28,21 @@ class Base {
 	 * Executes a query, shortcut to referencing $gSqlQuery and using
 	 * the my_sqli::query() function
 	 */
-	public static function Exec(string $query): mysqli_result | bool {
+	public static function Exec(string $query, bool $log = false): mysqli_result | bool {
 		global $gSqlConnection;
+		global $gResponse;
 
-		$resultSwitch = $gSqlConnection->query("USE DATABASE ".gDatabaseName.";");
 		$resultQuery  = $gSqlConnection->query($query);
 
-		if (!$resultSwitch || $resultQuery) {
-			die("There was an error executing the query: '" . $query . "'.");
+		if (!$resultQuery) {
+			if ($log)
+				$gResponse->setData($query, false);
+			return false;
 		}
 
-		return $resultSwitch && $resultQuery;
+		if ($log)
+			$gResponse->setData($query, true);
+		return $resultQuery;
 	}
 
 	/**
@@ -69,9 +78,13 @@ class Base {
 	 */
 	private static function CheckStatus(): void {
 		global $gSqlConnection;
+		global $gResponse;
 
 		if (!$gSqlConnection) {
-			die("There was an error connecting to the MySQL database.");
+			$gResponse->setData("SQLConnection", false);
+		}
+		else {
+			$gResponse->setData("SQLConnection", true);
 		}
 	}
 
@@ -81,15 +94,15 @@ class Base {
 	 */
 	private static function CreateDatabase(): void {
 		Base::Exec("CREATE DATABASE IF NOT EXISTS ".gDatabaseName.";");
-		Base::Exec("USE DATABASE ".gDatabaseName.";");
+		Base::Exec("USE ".gDatabaseName.";");
 	}
 
 	/**
 	 * Creates the default table(s) used within this website
 	 */
 	private static function CreateTables(): void {
-		Base::Exec("CREATE TABLE Visiteur (
-					".dbVisiteurPrimaryKey." BIGINT UNIQUE PRIMARY KEY AUTO INCREMENT NOT NULL,
+		Base::Exec("CREATE TABLE IF NOT EXISTS Visiteur (
+					".dbVisiteurPrimaryKey." BIGINT UNIQUE PRIMARY KEY AUTO_INCREMENT NOT NULL,
 					".dbVisiteurName." VARCHAR(100),
 					".dbVisiteurDaysCount." INT,
 					".dbVisiteurDailyFee." BIGINT
@@ -106,4 +119,11 @@ class Base {
 		Base::CreateTables();
 	}
 }
+
+if (isset($gReceived["init"]) && $gReceived["init"] == "true") {
+	$gResponse->setData("Init", true);
+	Base::Init();
+}
+
+echo($gResponse->toJson());
 ?>
