@@ -23,6 +23,32 @@ export default {
     VisitorsList,
     TextualStats,
     HistogramStats,
+  },
+  methods: {
+    sendFetchRequest(dest, formData) {
+      console.log("Preparing fetch request to: ", dest, "With data: ", formData);
+      
+      fetch (dest, {method: 'POST', body: formData})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response wasn't ok.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error("There was a problem with the fetch operation: ", error);
+      });
+    },
+    initPage() {
+      console.log("In init page.");
+      this.sendFetchRequest("http://localhost/phpdir/exo10/server/base.php", {});
+    }
+  },
+  created() {
+    this.initPage();
   }
 }
 </script>
