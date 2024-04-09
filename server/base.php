@@ -138,7 +138,9 @@ class Base {
 	{
 		global $gResponse;
 
+		Base::Log(__FILE__, __LINE__, var_export($gResponse, true));
 		$gResponse->setArray($field, $array);
+		Base::Log(__FILE__, __LINE__, var_export($gResponse, true));
 	}
 
 	/**
@@ -162,12 +164,20 @@ class Base {
 
 		$gResponse->wipe();
 	}
+
+	public static function Log(string $file, int $line, string $message)
+	{
+		$towrite = "[LOG:{$file}:{$line}] = {$message}\n";
+
+		$file = fopen("log.txt", "a");
+		fwrite($file, $towrite);
+		fclose($file);
+	}
 }
 
 if (isset($gReceived["init"]) && $gReceived["init"] == "true") {
 	$gResponse->setData("Init", true);
 	Base::Init();
+	Base::Log(__FILE__, __LINE__, "L");
 }
-
-echo($gResponse->toJson());
 ?>
