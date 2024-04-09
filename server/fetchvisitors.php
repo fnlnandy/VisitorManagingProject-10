@@ -24,14 +24,6 @@ class FetchVisitors
                 !isset($row[dbVisiteurDailyFee]))
                 continue;
             $id = strval($row[dbVisiteurPrimaryKey]);
-            $name = strval($row[dbVisiteurName]);
-            $daysCount = strval($row[dbVisiteurDaysCount]);
-            $dailyFee = strval($row[dbVisiteurDailyFee]);
-
-            $row[dbVisiteurPrimaryKey] = $id;
-            $row[dbVisiteurName] = $name;
-            $row[dbVisiteurDaysCount] = $daysCount;
-            $row[dbVisiteurDailyFee] = $dailyFee;
 
             $retVal[$id] = $row;
         }
