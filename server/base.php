@@ -56,7 +56,7 @@ class Base {
 		$counter = 1;
 
 		foreach ($args as $currentArg) {
-			$preparedQuery = str_replace("[".strval($counter)."]", $currentArg, $preparedQuery);
+			$preparedQuery = str_replace("[".strval($counter)."]", strval($currentArg), $preparedQuery);
 			$counter++;
 		}
 
