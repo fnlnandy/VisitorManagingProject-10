@@ -1,21 +1,28 @@
 <template>
   <div class="main-app">
-    <table class="list-table" id="visitors-list-table">
-      <tr>
-        <th>Nom</th>
-        <th>Nombre de jours</th>
-        <th>Tarif journalier</th>
-        <th>Tarif total (TJ * NJ)</th>
-      </tr>
-    </table>
+    <VisitorsList/>
+    <TextualStats/>
+
+    <div class="stats-histogram-wrapper">
+      <HistogramStats filler="FILLER" />
+    </div>
   </div>
 </template>
 
 <script>
+import HistogramStats from './HistogramStats.vue'
+import TextualStats from './TextualStats.vue'
+import VisitorsList from './VisitorsList.vue'
+
 export default {
   name: 'MainPage',
   props: {
     msg: String
+  },
+  components: {
+    VisitorsList,
+    TextualStats,
+    HistogramStats,
   }
 }
 </script>
