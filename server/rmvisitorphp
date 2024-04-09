@@ -1,0 +1,32 @@
+<?php 
+include_once("base.php");
+
+class RmVisitor
+{
+    private static function IsValidVisitorNum(array | null $data): bool
+    {
+        if (is_null($data))
+            return false;
+        if (!isset($data[dbVisiteurPrimaryKey]))
+            return false;
+        if (intval($data[dbVisiteurPrimaryKey]) == 0)
+            return false;
+        
+        return true;
+    }
+
+    public static function RemoveVisitor(): void
+    {
+        $receivedData = Base::DecodeInputAsAssoc();
+
+        if (!RmVisitor::IsValidVisitorNum($receivedData))
+            return;
+
+        $preparedQuery = "DELETE FROM Visiteur WHERE ".dbVisiteurPrimaryKey." = [1];";
+        
+        Base::ExecPreparedQuery($preparedQuery, $receivedData[dbVisiteurPrimaryKey]);
+    }
+}
+
+RmVisitor::RemoveVisitor();
+?>
