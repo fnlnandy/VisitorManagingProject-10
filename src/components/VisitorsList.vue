@@ -20,18 +20,28 @@
     <!-- Should be a big green button, to make it obvious that
     it's an 'Add New' button -->
     <div class="magnified-button-wrapper">
-        <button class="magnified-button" id="add-new-visitor-button">
+        <button class="magnified-button" id="add-new-visitor-button" @click="ToggleFormDisplayState">
         +
         </button>
     </div>
+
+    <VisitorForm v-if="showForm"/>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+    import VisitorForm from './VisitorForm.vue'
+    import { ref, defineProps } from 'vue';
 
-const props = defineProps({
-    visitorsArray: ref(Array),
-});
+    const showForm = ref(false);
+
+    const props = defineProps({
+        visitorsArray: ref(Array),
+    });
+
+    function ToggleFormDisplayState()
+    {
+        showForm.value = !(showForm.value);
+    }
 </script>
 
 <style>
