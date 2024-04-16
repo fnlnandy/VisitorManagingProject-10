@@ -8,6 +8,7 @@
         <input v-model="formDailyFeeField" id="visitor-daily-fee-field" type="number" min="100" max="200000" required>
     
         <input id="visitor-form-submit-button" type="submit">
+        <input type="reset" @click.prevent="ClearFormCallback">
     </form>
 </template>
 
@@ -87,6 +88,13 @@ function CheckValues(name, daysCount, dailyFee)
     }
 
     return true;
+}
+
+function ClearFormCallback()
+{
+    formNameField.value = String();
+    formDaysCountField.value = Number();
+    formDailyFeeField.value = Number();
 }
 </script>
 
