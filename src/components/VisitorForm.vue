@@ -12,10 +12,11 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits, watch } from 'vue';
 
 const props = defineProps({
-    currentId: ref(Number)
+    currentId: ref(Number),
+    currentDataToFillIn: ref(Object)
 });
 
 const emits = defineEmits(['form-data-emitted']);
@@ -23,6 +24,12 @@ const emits = defineEmits(['form-data-emitted']);
 const formNameField = ref("");
 const formDaysCountField = ref(0);
 const formDailyFeeField = ref(0);
+
+watch(() => props.currentDataToFillIn.value, (newValue) => {
+    formNameField.value = String(newValue?.Nom);
+    formDaysCountField.value = Number(newValue?.NombreJours);
+    formDailyFeeField.value = Number(newValue?.TarifJournalier);
+});
 
 function EmitData(visitorId, visitorName, visitorDaysCount, visitorDailyFee)
 {
@@ -81,7 +88,6 @@ function CheckValues(name, daysCount, dailyFee)
 
     return true;
 }
-
 </script>
 
 <style>

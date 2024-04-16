@@ -27,7 +27,7 @@
         </button>
     </div>
 
-    <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()"/>
+    <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()" :currentDataToFillIn="ComputeCurrentVisitorData()"/>
 </template>
 
 <script setup>
@@ -42,6 +42,7 @@
      */
     const showForm = ref(false);
     const currentId = ref(0);
+    const currentVisitorData = ref(Object);
 
     /**
      * @brief Arguments passed to this
@@ -86,6 +87,18 @@
     }
 
     /**
+     * @param object
+     * 
+     * @brief Sets the current tracked visitor data
+     * to fill for the form
+     */
+    function SetCurrentVisitorData(object)
+    {
+        console.log(object);
+        currentVisitorData.value = object;
+    }
+
+    /**
      * @brief Triggers all the callbacks related to
      * adding a new visitor
      * 
@@ -100,6 +113,7 @@
     {
         ShowForm();
         SetCurrentId(0);
+        SetCurrentVisitorData(FindVisitorWithIdData(0));
     }
 
     /**
@@ -120,6 +134,7 @@
         console.log("Edit", id);
         ShowForm();
         SetCurrentId(id);
+        SetCurrentVisitorData(FindVisitorWithIdData(Number(id)));
     }
 
     /**
@@ -163,6 +178,45 @@
     function ComputeCurrentId()
     {
         return currentId;
+    }
+
+    /**
+     * @brief Computes the current visitor data
+     */
+    function ComputeCurrentVisitorData()
+    {
+        return currentVisitorData;
+    }
+
+    /**
+     * 
+     */
+    function FindVisitorWithIdData(id)
+    {
+        let retVal = {
+            Nom: '',
+            NombreJours: 0,
+            TarifJournalier: 0
+        };
+        let arrayOfVisitors = props.visitorsArray.value;
+
+        if (id == 0) return retVal;
+
+        for(let i = 0, max = arrayOfVisitors.length; i < max; i++)
+        {
+            let visitorId = Number(arrayOfVisitors[i]?.NumVisiteur);
+
+            if (id == visitorId)
+            {
+                retVal.Nom = arrayOfVisitors[i]?.Nom;
+                retVal.NombreJours = Number(arrayOfVisitors[i]?.NombreJours);
+                retVal.TarifJournalier = Number(arrayOfVisitors[i]?.TarifJournalier);
+
+                break;
+            }
+        }
+
+        return retVal;
     }
 </script>
 
