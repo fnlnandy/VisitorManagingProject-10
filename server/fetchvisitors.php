@@ -18,6 +18,7 @@ class FetchVisitors
         $retVal = array();
 
         Base::Log(__FILE__, __LINE__, __FUNCTION__);
+
         while ($row = $result->fetch_assoc()) {
             if (is_null($row) || !isset($row[dbVisiteurPrimaryKey]) ||
                 !isset($row[dbVisiteurName]) || !isset($row[dbVisiteurDaysCount]) ||
@@ -25,7 +26,7 @@ class FetchVisitors
                 continue;
             $id = strval($row[dbVisiteurPrimaryKey]);
 
-            $retVal[$id] = $row;
+            $retVal[] = $row;
         }
 
         return $retVal;
