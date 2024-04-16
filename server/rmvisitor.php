@@ -28,15 +28,20 @@ class RmVisitor
     public static function RemoveVisitor(): void
     {
         $receivedData = Base::DecodeInputAsAssoc();
+        Base::Log(__FILE__, __LINE__, var_export($receivedData, true));
 
         if (!RmVisitor::IsValidVisitorNum($receivedData))
             return;
 
         $preparedQuery = "DELETE FROM Visiteur WHERE ".dbVisiteurPrimaryKey." = [1];";
         
-        Base::ExecPreparedQuery($preparedQuery, $receivedData[dbVisiteurPrimaryKey]);
+        Base::Log(__FILE__, __LINE__, var_export($preparedQuery, true));
+        Base::Log(__FILE__, __LINE__, var_export(Base::ExecPreparedQuery($preparedQuery, $receivedData[dbVisiteurPrimaryKey]), true));
     }
 }
 
 RmVisitor::RemoveVisitor();
+Base::WipeResponseData();
+Base::SetResponseData("Success", true);
+Base::SendJSONResponse();
 ?>

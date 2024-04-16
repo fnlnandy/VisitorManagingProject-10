@@ -32,16 +32,25 @@ class Base {
 		global $gSqlConnection;
 		global $gResponse;
 
+        Base::Log(__FILE__, __LINE__, $query);
+
+        $resultQuery  = $gSqlConnection->query("USE ".gDatabaseName.";");
 		$resultQuery  = $gSqlConnection->query($query);
+
+        Base::Log(__FILE__, __LINE__, "Right before if");
 
 		if (!$resultQuery) {
 			if ($log)
 				$gResponse->setData($query, false);
-			return false;
+            
+            Base::Log(__FILE__, __LINE__, var_export($gSqlConnection->errno, true));
+            return false;
 		}
 
 		if ($log)
 			$gResponse->setData($query, true);
+
+        Base::Log(__FILE__, __LINE__, var_export($resultQuery, true));
 		return $resultQuery;
 	}
 
@@ -60,6 +69,7 @@ class Base {
 			$counter++;
 		}
 
+        Base::Log(__FILE__, __LINE__, $preparedQuery);
 		return Base::Exec($preparedQuery);
 	}
 

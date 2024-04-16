@@ -73,4 +73,7 @@ class DatabaseActions
 }
 
 DatabaseActions::ExecVisitorAction();
+Base::WipeResponseData();
+Base::SetResponseData("Success", true);
+Base::SendJSONResponse();
 ?>
