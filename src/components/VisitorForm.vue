@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch } from 'vue';
+import { ref, defineProps, defineEmits, watch, onMounted } from 'vue';
 
 const props = defineProps({
     currentId: ref(Number),
@@ -27,10 +27,19 @@ const formDaysCountField = ref(0);
 const formDailyFeeField = ref(0);
 
 watch(() => props.currentDataToFillIn.value, (newValue) => {
-    formNameField.value = String(newValue?.Nom);
-    formDaysCountField.value = Number(newValue?.NombreJours);
-    formDailyFeeField.value = Number(newValue?.TarifJournalier);
+    LoadCurrentVisitorData(newValue);
 });
+
+onMounted(() => {
+    LoadCurrentVisitorData(props.currentDataToFillIn.value);
+});
+
+function LoadCurrentVisitorData(data)
+{
+    formNameField.value = String(data?.Nom);
+    formDaysCountField.value = Number(data?.NombreJours);
+    formDailyFeeField.value = Number(data?.TarifJournalier);
+}
 
 function EmitData(visitorId, visitorName, visitorDaysCount, visitorDailyFee)
 {

@@ -12,10 +12,10 @@
             init: true
         };
 
-        SendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", fetchReqParams);
+        SendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", fetchReqParams, true);
     });
 
-    async function SendFetchRequest(dest, formData)
+    async function SendFetchRequest(dest, formData, fetchData = false)
     {
         console.log("Preparing fetch request to: ", dest, "With data: ", formData);
       
@@ -30,8 +30,11 @@
             return response.json();
         })
         .then(data => {
-            fetchedData.value = data["FetchedData"];
-            loadedData.value  = true;
+            if (fetchData)
+            {
+                fetchedData.value = data["FetchedData"];
+                loadedData.value  = true;
+            }
             console.log("Fetched data assigned:", fetchedData.value);
         })
         .catch(error => {
@@ -52,11 +55,23 @@
             return fetchedData;
         }
     }
+
+    function HandleActionOnVisitorEmitted(data)
+    {
+        SendFetchRequest("http://localhost/phpdir/exo10/server/actions.php", data);
+    }
+
+    function HandleDeletingVisitorEmitted(id)
+    {
+        let data = { NumVisiteur: Number(id) };
+
+        SendFetchRequest("http://localhost/phpdir/exo10/server/rmvisitor.php", data);
+    }
 </script>
 
 <template>
   <div class="main-app">
-    <VisitorsList v-if="loadedData" :visitorsArray="ComputeFetchedData()"/>
+    <VisitorsList v-if="loadedData" :visitorsArray="ComputeFetchedData()" @act-on-visitor-query="HandleActionOnVisitorEmitted" @delete-visitor-query="HandleDeletingVisitorEmitted"/>
     <TextualStats v-if="loadedData" :fetchedData="ComputeFetchedData()"/>
 
     <div class="stats-histogram-wrapper">

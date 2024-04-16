@@ -35,7 +35,7 @@
      * @brief Modules needed by this component
      */
     import VisitorForm from './VisitorForm.vue'
-    import { ref, defineProps } from 'vue';
+    import { ref, defineProps, defineEmits } from 'vue';
 
     /**
      * @brief Variables tracked by this component
@@ -51,6 +51,8 @@
     const props = defineProps({
         visitorsArray: ref(Array),
     });
+
+    const emits = defineEmits(['act-on-visitor-query', 'delete-visitor-query']);
 
     /**
      * @brief Displays the form element
@@ -154,6 +156,7 @@
         console.log("Delete", id);
         HideForm();
         SetCurrentId(id);
+        emits('delete-visitor-query', id);
     }
 
     /**
@@ -169,7 +172,8 @@
      */
     function HandleEmittedFormData(data)
     {
-        console.log(data);
+        console.log("Emitting data to MainApp.vue");
+        emits('act-on-visitor-query', data);
     }
 
     /**
