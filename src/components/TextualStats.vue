@@ -8,9 +8,29 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'TextualStats',
+<script setup>
+import { ref, defineProps, onMounted } from 'vue';
+
+const totalFees = ref(0);
+const props = defineProps({
+    fetchedData: ref(Array)
+});
+
+onMounted(() => {
+    CalculateTotalFees();
+});
+
+function CalculateTotalFees()
+{
+    totalFees.value = 0;
+
+    for(let i = 0, max = props.fetchedData.value.length; i < max; i++)
+    {
+        let daysCount = props.fetchedData.value[i]?.NombreJours;
+        let dailyFees = props.fetchedData.value[i]?.TarifJournalier;
+
+        totalFees.value += daysCount * dailyFees;
+    }
 }
 </script>
 
