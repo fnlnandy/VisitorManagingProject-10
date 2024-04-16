@@ -1,6 +1,63 @@
+<script setup>
+    import HistogramStats from './HistogramStats.vue'
+    import TextualStats from './TextualStats.vue'
+    import VisitorsList from './VisitorsList.vue'
+    import { ref, onMounted } from 'vue'
+
+    const fetchedData = ref([]);
+    const loadedData = ref(false);
+
+    onMounted(() => {
+        let fetchReqParams = {
+            init: true
+        };
+
+        SendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", fetchReqParams);
+    });
+
+    async function SendFetchRequest(dest, formData)
+    {
+        console.log("Preparing fetch request to: ", dest, "With data: ", formData);
+      
+        fetch (dest, {method: 'POST', body: JSON.stringify(formData)})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response wasn't ok.");
+            }
+
+            console.log("Getting the request response into JSON...");
+      
+            return response.json();
+        })
+        .then(data => {
+            fetchedData.value = data["FetchedData"];
+            loadedData.value  = true;
+            console.log("Fetched data assigned:", fetchedData);
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation: ", error);
+        });
+    }
+
+    function ComputeFetchedData()
+    {
+        if (fetchedData.value.length > 0)
+        {
+            console.log("Fetched data length is > 0");
+            return fetchedData;
+        }
+        else
+        {
+            console.log("Fetched data length == 0");
+            return fetchedData;
+        }
+    }
+</script>
+
 <template>
   <div class="main-app">
-    <VisitorsList/>
+    <div v-if="!loadedData" >Loading table data...</div>
+    <VisitorsList v-else :visitorsArray="ComputeFetchedData()"/>
     <TextualStats/>
 
     <div class="stats-histogram-wrapper">
@@ -8,57 +65,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import HistogramStats from './HistogramStats.vue'
-import TextualStats from './TextualStats.vue'
-import VisitorsList from './VisitorsList.vue'
-
-export default {
-  name: 'MainPage',
-  props: {
-    msg: String
-  },
-  components: {
-    VisitorsList,
-    TextualStats,
-    HistogramStats,
-  },
-  methods: {
-    sendFetchRequest(dest, formData) {
-      console.log("Preparing fetch request to: ", dest, "With data: ", formData);
-      
-      fetch (dest, {method: 'POST', body: JSON.stringify(formData)})
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response wasn't ok.");
-        }
-
-        console.log("Getting the request response into JSON...");
-      
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error("There was a problem with the fetch operation: ", error);
-      });
-    },
-    initPage() {
-      console.log("In init page.");
-      var data = {
-        init: true
-      };
-
-      this.sendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", data);
-    }
-  },
-  created() {
-    this.initPage();
-  }
-}
-</script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
