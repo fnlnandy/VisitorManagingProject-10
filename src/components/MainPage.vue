@@ -32,7 +32,7 @@
         .then(data => {
             fetchedData.value = data["FetchedData"];
             loadedData.value  = true;
-            console.log("Fetched data assigned:", fetchedData);
+            console.log("Fetched data assigned:", fetchedData.value);
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation: ", error);
