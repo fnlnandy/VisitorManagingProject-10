@@ -56,9 +56,8 @@
 
 <template>
   <div class="main-app">
-    <div v-if="!loadedData" >Loading table data...</div>
-    <VisitorsList v-else :visitorsArray="ComputeFetchedData()"/>
-    <TextualStats :fetchedData="ComputeFetchedData()"/>
+    <VisitorsList v-if="loadedData" :visitorsArray="ComputeFetchedData()"/>
+    <TextualStats v-if="loadedData" :fetchedData="ComputeFetchedData()"/>
 
     <div class="stats-histogram-wrapper">
       <HistogramStats filler="FILLER" />
