@@ -24,6 +24,24 @@ class Base {
 		return $retval;
 	}
 
+    private static function ExecInternal(string $query)
+    {
+        global $gSqlConnection;
+
+        // $result = $gSqlConnection->query(";");
+
+        try 
+        {
+            $result = $gSqlConnection->query($query);
+        }
+        catch (Exception $e)
+        {
+            Base::Log(__FILE__, __LINE__, "Exception: ".$e." : ".$gSqlConnection->error);
+        }
+
+        return $result;
+    }
+
 	/**
 	 * Executes a query, shortcut to referencing $gSqlQuery and using
 	 * the my_sqli::query() function
@@ -34,8 +52,8 @@ class Base {
 
         Base::Log(__FILE__, __LINE__, $query);
 
-        $resultQuery  = $gSqlConnection->query("USE ".gDatabaseName.";");
-		$resultQuery  = $gSqlConnection->query($query);
+        $resultQuery = Base::ExecInternal("USE ".gDatabaseName.";");
+        $resultQuery = Base::ExecInternal($query);
 
         Base::Log(__FILE__, __LINE__, "Right before if");
 
