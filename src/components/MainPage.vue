@@ -73,7 +73,7 @@
         <VisitorsList v-if="loadedData" :visitorsArray="ComputeFetchedData()"
             @act-on-visitor-query="HandleActionOnVisitorEmitted" @delete-visitor-query="HandleDeletingVisitorEmitted" />
         <TextualStats v-if="loadedData" :fetchedData="ComputeFetchedData()" />
-        <HistogramStats />
+        <HistogramStats v-if="loadedData" :generalData="fetchedData" />
     </div>
 </template>
 

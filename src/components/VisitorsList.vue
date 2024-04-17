@@ -2,20 +2,20 @@
     <!-- Where the base data for each visitor should be visible -->
     <div class="list-table-wrapper">
         <table border="1" class="list-table" id="visitors-list-table">
-        <tr>
-            <th>Nom</th>
-            <th>Nombre de jours</th>
-            <th>Tarif journalier</th>
-            <th>Tarif total (TJ * NJ)</th>
-        </tr>
-        <tr v-for="visitor in props.visitorsArray.value" :key="visitor?.NumVisiteur">
-            <td>{{ visitor?.Nom }}</td>
-            <td>{{ visitor?.NombreJours }}</td>
-            <td>{{ visitor?.TarifJournalier }}</td>
-            <td>{{ visitor?.NombreJours * visitor?.TarifJournalier }}</td>
-            <td @click="EditCurrent(visitor?.NumVisiteur)">Edit button</td>
-            <td @click="DeleteCurrent(visitor?.NumVisiteur)">Delete button</td>
-        </tr>
+            <tr>
+                <th>Nom</th>
+                <th>Nombre de jours</th>
+                <th>Tarif journalier</th>
+                <th>Tarif total (TJ * NJ)</th>
+            </tr>
+            <tr v-for="visitor in props.visitorsArray.value" :key="visitor?.NumVisiteur">
+                <td>{{ visitor?.Nom }}</td>
+                <td>{{ visitor?.NombreJours }}</td>
+                <td>{{ visitor?.TarifJournalier }}</td>
+                <td>{{ visitor?.NombreJours * visitor?.TarifJournalier }}</td>
+                <td @click="EditCurrent(visitor?.NumVisiteur)">Edit button</td>
+                <td @click="DeleteCurrent(visitor?.NumVisiteur)">Delete button</td>
+            </tr>
         </table>
     </div>
 
@@ -23,11 +23,12 @@
     it's an 'Add New' button -->
     <div class="magnified-button-wrapper">
         <button class="magnified-button" id="add-new-visitor-button" @click="AddNewVisitor">
-        +
+            +
         </button>
     </div>
 
-    <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()" :currentDataToFillIn="ComputeCurrentVisitorData()"/>
+    <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()"
+        :currentDataToFillIn="ComputeCurrentVisitorData()" />
 </template>
 
 <script setup>
@@ -61,8 +62,7 @@
      * form to decided whether to be shown or not
      * to true
      */
-    function ShowForm()
-    {
+    function ShowForm() {
         showForm.value = true;
     }
 
@@ -73,18 +73,16 @@
      * form to decided whether to be shown or not
      * to false
      */
-    function HideForm()
-    {
+    function HideForm() {
         showForm.value = false;
     }
-    
+
     /**
      * @param value
      * 
      * @brief Sets the current tracked id to value
      */
-    function SetCurrentId(value)
-    {
+    function SetCurrentId(value) {
         currentId.value = value;
     }
 
@@ -94,8 +92,7 @@
      * @brief Sets the current tracked visitor data
      * to fill for the form
      */
-    function SetCurrentVisitorData(object)
-    {
+    function SetCurrentVisitorData(object) {
         console.log(object);
         currentVisitorData.value = object;
     }
@@ -111,8 +108,7 @@
      * @todo Clear the form while showing it, implement
      * a custom callback that will also be used with v-on:reset (?)
      */
-    function AddNewVisitor()
-    {
+    function AddNewVisitor() {
         ShowForm();
         SetCurrentId(0);
         SetCurrentVisitorData(FindVisitorWithIdData(0));
@@ -131,8 +127,7 @@
      * @todo Fill in the form with the selected visitor's
      * info
      */
-    function EditCurrent(id)
-    {
+    function EditCurrent(id) {
         console.log("Edit", id);
         ShowForm();
         SetCurrentId(id);
@@ -151,8 +146,7 @@
      * 
      * @todo Actually implement the request part
      */
-    function DeleteCurrent(id)
-    {
+    function DeleteCurrent(id) {
         console.log("Delete", id);
         HideForm();
         SetCurrentId(id);
@@ -170,8 +164,7 @@
      * 
      * @todo Implement the request to the server
      */
-    function HandleEmittedFormData(data)
-    {
+    function HandleEmittedFormData(data) {
         console.log("Emitting data to MainApp.vue");
         emits('act-on-visitor-query', data);
     }
@@ -179,24 +172,21 @@
     /**
      * @brief Computes the current tracked id
      */
-    function ComputeCurrentId()
-    {
+    function ComputeCurrentId() {
         return currentId;
     }
 
     /**
      * @brief Computes the current visitor data
      */
-    function ComputeCurrentVisitorData()
-    {
+    function ComputeCurrentVisitorData() {
         return currentVisitorData;
     }
 
     /**
      * 
      */
-    function FindVisitorWithIdData(id)
-    {
+    function FindVisitorWithIdData(id) {
         let retVal = {
             Nom: '',
             NombreJours: 0,
@@ -206,12 +196,10 @@
 
         if (id == 0) return retVal;
 
-        for(let i = 0, max = arrayOfVisitors.length; i < max; i++)
-        {
+        for (let i = 0, max = arrayOfVisitors.length; i < max; i++) {
             let visitorId = Number(arrayOfVisitors[i]?.NumVisiteur);
 
-            if (id == visitorId)
-            {
+            if (id == visitorId) {
                 retVal.Nom = arrayOfVisitors[i]?.Nom;
                 retVal.NombreJours = Number(arrayOfVisitors[i]?.NombreJours);
                 retVal.TarifJournalier = Number(arrayOfVisitors[i]?.TarifJournalier);
@@ -224,6 +212,4 @@
     }
 </script>
 
-<style>
-
-</style>
+<style></style>
