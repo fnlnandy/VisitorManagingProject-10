@@ -1,14 +1,25 @@
-<?php 
+<?php
+
+/**
+ * @brief Allows fetch requests on this file from our Vue application
+ */
 header("Access-Control-Allow-Origin: http://localhost:8080");
+
+/**
+ * @brief Needed includes
+ */
 include_once("base.php");
 
 class DatabaseActions
 {
     /**
-     * Returns whether the received visitor number is valid
-     * or not
+     * @param rec
+     * 
+     * @brief Returns whether the specified received array
+     * has a valid visitor primary key (NumVisiteur)
      */
-    private static function IsValidVisitorNumber(array | null $rec): bool {
+    private static function IsValidVisitorNumber(array | null $rec): bool
+    {
         if (is_null($rec))
             return false;
         if (!isset($rec[dbVisiteurPrimaryKey]))
@@ -19,12 +30,15 @@ class DatabaseActions
     }
 
     /**
-     * Adds a new visitor
+     * @param data
+     * 
+     * @brief Adds a new visitor by fetching data
      */
-    private static function AddVisitor(array $data): bool {
+    private static function AddVisitor(array $data): bool
+    {
         $preparedQuery = "INSERT INTO Visiteur ("
-                          .dbVisiteurName.", ".dbVisiteurDaysCount.", "
-                          .dbVisiteurDailyFee.") VALUES('[1]', [2], [3]);";
+            . dbVisiteurName . ", " . dbVisiteurDaysCount . ", "
+            . dbVisiteurDailyFee . ") VALUES('[1]', [2], [3]);";
         $name          = $data[dbVisiteurName];
         $daysCount     = $data[dbVisiteurDaysCount];
         $dailyFee      = $data[dbVisiteurDailyFee];
@@ -35,14 +49,17 @@ class DatabaseActions
     }
 
     /**
-     * Updates an existing visitor
+     * @param data
+     * 
+     * @brief Update a visitor based on the received data
      */
-    private static function UpdateVisitor(array $data): bool {
+    private static function UpdateVisitor(array $data): bool
+    {
         $preparedQuery = "UPDATE Visiteur SET "
-                          .dbVisiteurName     ." = '[2]',"
-                          .dbVisiteurDaysCount ." = [3],"
-                          .dbVisiteurDailyFee  ." = [4] WHERE "
-                          .dbVisiteurPrimaryKey." = [1];";
+            . dbVisiteurName     . " = '[2]',"
+            . dbVisiteurDaysCount . " = [3],"
+            . dbVisiteurDailyFee  . " = [4] WHERE "
+            . dbVisiteurPrimaryKey . " = [1];";
         $id = $data[dbVisiteurPrimaryKey];
         $newName = $data[dbVisiteurName];
         $newDaysCount = $data[dbVisiteurDaysCount];
@@ -52,19 +69,21 @@ class DatabaseActions
 
         return ($result != false);
     }
-    
+
     /**
-     * Determines whether to add a new visitor or to update
-     * an existing one
+     * @brief Performs a check on the visitor ID to
+     * know whether to add a new one or update an
+     * existing one's data
      */
-    public static function ExecVisitorAction(): void {
+    public static function ExecVisitorAction(): void
+    {
         $receivedData = Base::DecodeInputAsAssoc();
 
         if (is_null($receivedData)) {
             return;
         }
-        
-        // If it's invalid or = 0 then it is a new visitor
+
+        //! If it's invalid or = 0 then it is a new visitor
         if (DatabaseActions::IsValidVisitorNumber($receivedData))
             DatabaseActions::UpdateVisitor($receivedData);
         else
@@ -72,8 +91,15 @@ class DatabaseActions
     }
 }
 
+/**
+ * @brief File's main callbacks
+ * 
+ * @details Executes the matching action to
+ * the received data, wipes the JSON output,
+ * sets 'Success' to true and sends the new
+ * JSON output
+ */
 DatabaseActions::ExecVisitorAction();
 Base::WipeResponseData();
 Base::SetResponseData("Success", true);
 Base::SendJSONResponse();
-?>

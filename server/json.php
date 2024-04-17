@@ -1,10 +1,15 @@
-<?php 
+<?php
+
+/**
+ * @brief Base class for a JSON Object
+ */
 class JsonObject
 {
+    //! @brief This class' core data
     private $mCore;
-    
+
     /**
-     * Default constructor
+     * @brief Default constructor
      */
     public function __construct()
     {
@@ -12,7 +17,10 @@ class JsonObject
     }
 
     /**
-     * Sets a specific field of the JSON
+     * @param field
+     * @param value
+     * 
+     * @brief Sets a specific field of the JSON
      * object
      */
     public function setData(string $field, mixed $value): void
@@ -21,7 +29,10 @@ class JsonObject
     }
 
     /**
-     * Sets a specific field as array in
+     * @param field
+     * @param array
+     * 
+     * @brief Sets a specific field as array in
      * the JSON object
      */
     public function setArray(string $field, array $array): void
@@ -30,7 +41,7 @@ class JsonObject
     }
 
     /**
-     * Converts the core to JSON, to use as
+     * @brief Converts the core to JSON, to use as
      * response
      */
     public function toJson(): string | false
@@ -39,7 +50,7 @@ class JsonObject
     }
 
     /**
-     * Wipes all the data inside the JSON
+     * @brief Wipes all the data inside the JSON
      * object
      */
     public function wipe(): void
@@ -47,4 +58,3 @@ class JsonObject
         $this->mCore = [];
     }
 }
-?>
