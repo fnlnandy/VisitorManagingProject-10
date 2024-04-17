@@ -9,28 +9,50 @@
 </template>
 
 <script setup>
+    /**
+     * @brief Needed imporst
+     */
     import { ref, defineProps, onMounted } from 'vue';
 
+    /**
+     * @brief Data used throughout the code
+     */
     const totalFees = ref(0);
     const minimalFees = ref(0);
     const maximalFees = ref(0);
 
+    /**
+     * @brief Props
+     */
     const props = defineProps({
         fetchedData: ref(Array)
     });
 
+    /**
+     * @Brief As soon as this component's mounted,
+     * we have to calculate all the stats and display
+     * them in text
+     */
     onMounted(() => {
         CalculateTotalFees();
         CalculateMaximalFees();
         CalculateMinimaFees();
     });
 
+    /**
+     * @param entry
+     * 
+     * @brief Calculates a fee using the formula daysCount * dailyFee
+     */
     function CalculateImmediateFee(entry) {
         let result = entry?.NombreJours * entry?.TarifJournalier;
 
         return Number(result);
     }
 
+    /**
+     * @brief Calculates the total fees (i.e. sum of all the visitors' fees)
+     */
     function CalculateTotalFees() {
         let receivedArray = props.fetchedData.value;
 
@@ -39,6 +61,9 @@
         }
     }
 
+    /**
+     * @brief Calculates the minimal fee within the visitors
+     */
     function CalculateMaximalFees() {
         let receivedArray = props.fetchedData.value;
         let currentMax = 0;
@@ -53,6 +78,9 @@
         maximalFees.value = currentMax;
     }
 
+    /**
+     * @brief Calculates the maximal fee within the visitors
+     */
     function CalculateMinimaFees() {
         let receivedArray = props.fetchedData.value;
         let currentMin = 0;
@@ -62,6 +90,7 @@
 
         currentMin = CalculateImmediateFee(receivedArray[0]);
 
+        //! i = 1 because we already read the first (0) entry's value
         for (let i = 1, max = receivedArray.length; i < max; i++) {
             let buffer = CalculateImmediateFee(receivedArray[i]);
 

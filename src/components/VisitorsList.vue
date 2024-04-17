@@ -104,9 +104,6 @@
      * @details Displays the form to fill in data,
      * also set the current id to 0 (which in server
      * means that we're adding a new visitor)
-     * 
-     * @todo Clear the form while showing it, implement
-     * a custom callback that will also be used with v-on:reset (?)
      */
     function AddNewVisitor() {
         ShowForm();
@@ -123,9 +120,6 @@
      * @details Is integrated within all the embedded
      * buttons inside the table, params are set automatically
      * thanks to v-for
-     * 
-     * @todo Fill in the form with the selected visitor's
-     * info
      */
     function EditCurrent(id) {
         console.log("Edit", id);
@@ -143,8 +137,6 @@
      * @details Hides the form, sets the current id
      * and eventually should perform a request to the
      * server
-     * 
-     * @todo Actually implement the request part
      */
     function DeleteCurrent(id) {
         console.log("Delete", id);
@@ -161,8 +153,6 @@
      * 
      * @details Should ultimately perform a request
      * to the server as well
-     * 
-     * @todo Implement the request to the server
      */
     function HandleEmittedFormData(data) {
         console.log("Emitting data to MainApp.vue");
@@ -184,7 +174,12 @@
     }
 
     /**
+     * @param id
      * 
+     * @brief Finds a visitor with the specific if
+     * 
+     * @details Loops through the given fetchedData array
+     * to try to find a matching entry
      */
     function FindVisitorWithIdData(id) {
         let retVal = {

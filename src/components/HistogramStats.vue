@@ -3,13 +3,22 @@
 </template>
 
 <script setup>
+    /**
+     * @brief Needed imports
+     */
     import Chart from 'chart.js/auto';
     import { onMounted, defineProps, ref } from 'vue';
 
+    /**
+     * @brief props
+     */
     const props = defineProps({
         generalData: ref(Array)
     });
 
+    /**
+     * @brief Immediately loads the chart's data
+     */
     onMounted(() => {
         console.log("Props:", props.generalData);
 
@@ -20,8 +29,11 @@
                 label: 'Tarif',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: [CalculateTotal(), CalculateMinimum(),
-                CalculateMaximum()]
+                data: [
+                    CalculateTotal(),
+                    CalculateMinimum(),
+                    CalculateMaximum()
+                ]
             }]
         };
         const config = {
@@ -36,12 +48,25 @@
         );
     });
 
+    /**
+     * @param entry
+     * 
+     * @brief Calculates the fee using the formula daysCount * dailyFee
+     * 
+     * @note Is redundant as it has a clone in TextualStats.vue; however,
+     * ref() doesn't need dereferencing in this page ? (Why ?)
+     */
     function CalculateImmediateFee(entry) {
         let result = entry?.NombreJours * entry?.TarifJournalier;
 
         return Number(result);
     }
 
+    /**
+     * @brief Calculates the total fee and returns in
+     * 
+     * @note Is redundant as it has a clone in TextualStats.vue
+     */
     function CalculateTotal() {
         let visitorsArray = props.generalData;
         let totalFees = 0;
@@ -53,10 +78,16 @@
         return totalFees;
     }
 
+    /**
+     * @brief Calculates the minimal fee within the visitors and returns it
+     * 
+     * @note Is redundant as it has a clone in TextualStats.vue
+     */
     function CalculateMinimum() {
         let visitorsArray = props.generalData;
         let minimalFees = CalculateImmediateFee(visitorsArray[0]);
 
+        //! i = 1 because we've already read the first (0) entry's data
         for (let i = 1, max = visitorsArray.length; i < max; i++) {
             let buffer = CalculateImmediateFee(visitorsArray[i]);
 
@@ -67,6 +98,11 @@
         return minimalFees;
     }
 
+    /**
+     * @brief Calculates the maximal fee within the visitors and returns it
+     * 
+     * @note Is redundant as it has a clone in TextualStats.vue
+     */
     function CalculateMaximum() {
         let visitorsArray = props.generalData;
         let maximalFees = 0;

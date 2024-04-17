@@ -1,16 +1,28 @@
 <script setup>
+    /**
+     * @brief Needed imports
+     */
     import HistogramStats from './HistogramStats.vue'
     import TextualStats from './TextualStats.vue'
     import VisitorsList from './VisitorsList.vue'
     import { ref, onMounted } from 'vue'
 
+    /**
+     * @brief Data used throughout the code
+     */
     const fetchedData = ref([]);
     const loadedData = ref(false);
 
+    /**
+     * @brief Initiates the page immediately
+     */
     onMounted(() => {
         InitPage();
     });
 
+    /**
+     * @brief Fetches the needed data for the application
+     */
     function InitPage() {
         let fetchReqParams = {
             init: true
@@ -19,6 +31,17 @@
         SendFetchRequest("http://localhost/phpdir/exo10/server/fetchvisitors.php", fetchReqParams, true);
     }
 
+    /**
+     * @param dest
+     * @param formData
+     * @param fetchData
+     * 
+     * @brief Sends a fetch request to the specified dest
+     * 
+     * @details Sends an object that will be parsed as JSON (formData)
+     * to an url (dest), also can store the data inside fetchedData if
+     * fetchData is set to true
+     */
     async function SendFetchRequest(dest, formData, fetchData = false) {
         console.log("Preparing fetch request to: ", dest, "With data: ", formData);
 
@@ -44,6 +67,9 @@
             });
     }
 
+    /**
+     * @brief Computes the fetched data
+     */
     function ComputeFetchedData() {
         if (fetchedData.value.length > 0) {
             console.log("Fetched data length is > 0");
@@ -55,11 +81,29 @@
         }
     }
 
+    /**
+     * @param data
+     * 
+     * @brief Handles the act-on-visitor emitted event
+     * 
+     * @details Sends a request to the server, which will
+     * handle the type, and reloads the page to reflect
+     * the changes
+     */
     async function HandleActionOnVisitorEmitted(data) {
         await SendFetchRequest("http://localhost/phpdir/exo10/server/actions.php", data);
         location.reload();
     }
 
+    /**
+     * @param id
+     * 
+     * @brief Handles the delete-visitor emitted event
+     * 
+     * @details Sends a request to the server to remove
+     * the specified visitor with id; the id's validity
+     * will be checked within said server
+     */
     async function HandleDeletingVisitorEmitted(id) {
         let data = { NumVisiteur: Number(id) };
 
