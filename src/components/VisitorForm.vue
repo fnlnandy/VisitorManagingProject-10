@@ -7,7 +7,7 @@
         <input v-model="formNameField" id="visitor-name-field" type="text" maxlength="100" required>
         <label for="visitor-days-count-field">Nombre de jours:</label>
         <input v-model="formDaysCountField" id="visitor-days-count-field" type="number" min="1" max="365" required>
-        <label for="visitor-daily-fee-field"></label>
+        <label for="visitor-daily-fee-field">Tarif journalier:</label>
         <input v-model="formDailyFeeField" id="visitor-daily-fee-field" type="number" min="100" max="200000" required>
 
         <input id="visitor-form-submit-button" type="submit">
