@@ -15,6 +15,8 @@ define("gDatabaseName", "VUEPROJECTDB");
 /**
  * @brief Default fields in the 'Visiteur' table
  */
+define("reqIsAddMode", "ModeAjout");
+define("reqPreviousId", "IdPrecedent");
 define("dbVisiteurPrimaryKey", "NumVisiteur");
 define("dbVisiteurName", "Nom");
 define("dbVisiteurDaysCount", "NombreJours");

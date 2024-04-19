@@ -102,7 +102,7 @@
         };
 
         console.log("Visitor data about to be emitted:", visitorData);
-        await SendFetchRequest("http://localhost/phpdir/exo10/server/actions.php", data);
+        await SendFetchRequest("http://localhost/phpdir/exo10/server/actions.php", visitorData);
         location.reload();
     }
 

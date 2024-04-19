@@ -15,18 +15,34 @@ class DatabaseActions
     /**
      * @param rec
      * 
-     * @brief Returns whether the specified received array
-     * has a valid visitor primary key (NumVisiteur)
+     * @brief Returns whether we're in edit mode or not
      */
-    private static function IsValidVisitorNumber(array | null $rec): bool
+    private static function IsAddingMode(array | null $rec): bool
     {
-        if (is_null($rec))
-            return false;
-        if (!isset($rec[dbVisiteurPrimaryKey]))
-            return false;
-        if (intval($rec[dbVisiteurPrimaryKey]) == 0)
-            return false;
-        return true;
+        if (!isset($rec[reqIsAddMode])) {
+            //! None of the needed data is set, so we assume it's edit mode
+            if (!isset($rec[dbVisiteurPrimaryKey])) {
+                return true;
+            }
+
+            $currId = intval($rec[dbVisiteurPrimaryKey]);
+
+            //! We don't know the mode for sure, so we must assume
+            //! depending on the id's value
+            return ($currId == 0);
+        }
+
+        //! We know the mode, so we can discard any id parameter
+        $isAddMode = boolval($rec[reqIsAddMode]);
+
+        if ($isAddMode)
+            return true;
+
+        //! The flag is set to false, however we cannot add a visitor
+        //! that has the number '0'
+        $currId = intval($rec[dbVisiteurPrimaryKey]);
+
+        return ($currId == 0);
     }
 
     /**
@@ -36,14 +52,26 @@ class DatabaseActions
      */
     private static function AddVisitor(array $data): bool
     {
-        $preparedQuery = "INSERT INTO Visiteur ("
-            . dbVisiteurName . ", " . dbVisiteurDaysCount . ", "
-            . dbVisiteurDailyFee . ") VALUES('[1]', [2], [3]);";
-        $name          = $data[dbVisiteurName];
-        $daysCount     = $data[dbVisiteurDaysCount];
-        $dailyFee      = $data[dbVisiteurDailyFee];
+        $recId         = intval($data[dbVisiteurPrimaryKey]);
+        $name          = strval($data[dbVisiteurName]);
+        $daysCount     = strval($data[dbVisiteurDaysCount]);
+        $dailyFee      = strval($data[dbVisiteurDailyFee]);
 
-        $result = Base::ExecPreparedQuery($preparedQuery, $name, $daysCount, $dailyFee);
+        if ($recId == 0) {
+            $preparedQuery = "INSERT INTO Visiteur ("
+                . dbVisiteurName . ", " . dbVisiteurDaysCount . ", "
+                . dbVisiteurDailyFee . ") VALUES('[1]', [2], [3]);";
+
+            $result = Base::ExecPreparedQuery($preparedQuery, $name, $daysCount, $dailyFee);
+
+            return ($result != false);
+        }
+
+        $preparedQuery = "INSERT INTO Visiteur ("
+            . dbVisiteurPrimaryKey . ", " . dbVisiteurName . ", "
+            . dbVisiteurDaysCount . ", " . dbVisiteurDailyFee . ") VALUES([1], '[2]', [3], [4]);";
+
+        $result = Base::ExecPreparedQuery($preparedQuery, $recId, $name, $daysCount, $dailyFee);
 
         return ($result != false);
     }
@@ -56,16 +84,24 @@ class DatabaseActions
     private static function UpdateVisitor(array $data): bool
     {
         $preparedQuery = "UPDATE Visiteur SET "
-            . dbVisiteurName     . " = '[2]',"
-            . dbVisiteurDaysCount . " = [3],"
-            . dbVisiteurDailyFee  . " = [4] WHERE "
+            . dbVisiteurPrimaryKey . " = [2],"
+            . dbVisiteurName     . " = '[3]',"
+            . dbVisiteurDaysCount . " = [4],"
+            . dbVisiteurDailyFee  . " = [5] WHERE "
             . dbVisiteurPrimaryKey . " = [1];";
-        $id = $data[dbVisiteurPrimaryKey];
-        $newName = $data[dbVisiteurName];
-        $newDaysCount = $data[dbVisiteurDaysCount];
-        $newDailyFee = $data[dbVisiteurDailyFee];
+        $previousId   = intval($data[reqPreviousId]);
+        $newId        = intval($data[dbVisiteurPrimaryKey]);
+        $newName      = strval($data[dbVisiteurName]);
+        $newDaysCount = intval($data[dbVisiteurDaysCount]);
+        $newDailyFee  = intval($data[dbVisiteurDailyFee]);
+        Base::Log(__FILE__, __LINE__, var_export($preparedQuery, true));
+        Base::Log(__FILE__, __LINE__, var_export($previousId, true));
+        Base::Log(__FILE__, __LINE__, var_export($newId, true));
 
-        $result = Base::ExecPreparedQuery($preparedQuery, $id, $newName, $newDaysCount, $newDailyFee);
+        if ($previousId == 0)
+            return false;
+
+        $result = Base::ExecPreparedQuery($preparedQuery, $previousId, $newId, $newName, $newDaysCount, $newDailyFee);
 
         return ($result != false);
     }
@@ -83,11 +119,11 @@ class DatabaseActions
             return;
         }
 
-        //! If it's invalid or = 0 then it is a new visitor
-        if (DatabaseActions::IsValidVisitorNumber($receivedData))
-            DatabaseActions::UpdateVisitor($receivedData);
-        else
+        //! Checking for the 'add mode' flag, as well as the id's validity
+        if (DatabaseActions::IsAddingMode($receivedData))
             DatabaseActions::AddVisitor($receivedData);
+        else
+            DatabaseActions::UpdateVisitor($receivedData);
     }
 }
 
