@@ -1,6 +1,8 @@
 <template>
     <!-- The form about the Visitor's data -->
     <form @submit.prevent.stop="CheckAndEmitData" id="visitor-form" method="post">
+        <label for="visitor-id-field">Num. Visiteur:</label>
+        <input v-model="formIdField" id="visitor-id-field" type="number" min="1" required>
         <label for="visitor-name-field">Nom:</label>
         <input v-model="formNameField" id="visitor-name-field" type="text" maxlength="100" required>
         <label for="visitor-days-count-field">Nombre de jours:</label>
@@ -35,6 +37,7 @@
     /**
      * @brief Refs used throughout the code
      */
+    const formIdField = ref(0);
     const formNameField = ref("");
     const formDaysCountField = ref(0);
     const formDailyFeeField = ref(0);
@@ -43,15 +46,15 @@
      * @brief Watching over the currentDataToFilllIn props
      * to know that we should reload the form inputs' values
      */
-    watch(() => props.currentDataToFillIn.value, (newValue) => {
-        LoadCurrentVisitorData(newValue);
+    watch([GetPropsCurrentId, GetPropsCurrentData], ([currentId, changedDataToFillIn]) => {
+        LoadCurrentVisitorData(currentId, changedDataToFillIn);
     });
 
     /**
      * @brief Loads the form data passed as props immediately
      */
     onMounted(() => {
-        LoadCurrentVisitorData(props.currentDataToFillIn.value);
+        LoadCurrentVisitorData(props.currentId.value, props.currentDataToFillIn.value);
     });
 
     /**
@@ -59,10 +62,25 @@
      * 
      * @brief Loads the visitor data into the form
      */
-    function LoadCurrentVisitorData(data) {
+    function LoadCurrentVisitorData(id, data) {
+        formIdField.value = Number(id);
         formNameField.value = String(data?.Nom);
         formDaysCountField.value = Number(data?.NombreJours);
         formDailyFeeField.value = Number(data?.TarifJournalier);
+    }
+
+    /**
+     * 
+     */
+    function GetPropsCurrentId() {
+        return props.currentId.value;
+    }
+
+    /**
+     * 
+     */
+    function GetPropsCurrentData() {
+        return props.currentDataToFillIn.value;
     }
 
     /**
@@ -90,22 +108,24 @@
      * tries to emit if it's validated
      */
     function CheckAndEmitData() {
+        let idVal = Number(formIdField.value);
         let nameVal = String(formNameField.value);
         let daysCountVal = Number(formDaysCountField.value);
         let dailyFeeVal = Number(formDailyFeeField.value);
 
-        console.log("nameVal:", nameVal,
+        console.log("idVal:", idVal,
+            "nameVal:", nameVal,
             "daysCountVal:", daysCountVal,
             "dailyFeeVal:", dailyFeeVal);
         console.log("Checking and trying to emit form data from VisitorForm.vue");
 
-        if (!CheckValues()) {
+        if (!CheckValues(idVal, nameVal, daysCountVal, dailyFeeVal)) {
             console.log("Check was negative, returning...");
             return;
         }
 
         console.log("Check was positive, emitting...");
-        EmitData(props.currentId.value, nameVal, daysCountVal, dailyFeeVal);
+        EmitData(idVal, nameVal, daysCountVal, dailyFeeVal);
     }
 
     /**
@@ -115,7 +135,12 @@
      * 
      * @brief Checks the expected validy of name, daysCount and dailyFee
      */
-    function CheckValues(name, daysCount, dailyFee) {
+    function CheckValues(id, name, daysCount, dailyFee) {
+        if (id == 0) {
+            console.log("Id is 0");
+            alert("Le Numéro du visiteur ne peut pas être égal à 0.");
+            return false
+        }
         if (name == "") {
             console.log("Name is emtpy");
             alert("Le nom du visiteur ne peut pas être vide ou composé d'espaces.");
@@ -139,6 +164,7 @@
      * @brief Clears the form fields
      */
     function ClearFormCallback() {
+        formIdField.value = Number();
         formNameField.value = String();
         formDaysCountField.value = Number();
         formDailyFeeField.value = Number();

@@ -44,6 +44,7 @@
     const showForm = ref(false);
     const currentId = ref(0);
     const currentVisitorData = ref(Object);
+    const isEditMode = ref(false);
 
     /**
      * @brief Arguments passed to this
@@ -98,6 +99,16 @@
     }
 
     /**
+     * @param state
+     * 
+     * @brief Sets the current global boolean that
+     * dictates whether we're in edit mode or not
+     */
+    function SetIsEditMode(state) {
+        isEditMode.value = state;
+    }
+
+    /**
      * @brief Triggers all the callbacks related to
      * adding a new visitor
      * 
@@ -107,6 +118,7 @@
      */
     function AddNewVisitor() {
         ShowForm();
+        SetIsEditMode(false);
         SetCurrentId(0);
         SetCurrentVisitorData(FindVisitorWithIdData(0));
     }
@@ -124,6 +136,7 @@
     function EditCurrent(id) {
         console.log("Edit", id);
         ShowForm();
+        SetIsEditMode(true);
         SetCurrentId(id);
         SetCurrentVisitorData(FindVisitorWithIdData(Number(id)));
     }
@@ -141,6 +154,7 @@
     function DeleteCurrent(id) {
         console.log("Delete", id);
         HideForm();
+        SetIsEditMode(false);
         SetCurrentId(id);
         emits('delete-visitor-query', id);
     }
@@ -155,8 +169,32 @@
      * to the server as well
      */
     function HandleEmittedFormData(data) {
-        console.log("Emitting data to MainApp.vue");
-        emits('act-on-visitor-query', data);
+        const searchResult = FindVisitorWithIdData(data?.NumVisiteur);
+        let presumedId = Number(currentId.value);
+
+        if (IsVisitorValid(searchResult)) {
+            //! We're not in edit mode
+            if (presumedId == 0) {
+                alert("Un visiteur avec ce Numéro existe déjà.");
+                return;
+            }
+            //! We're in edit mode, which means the id should either be
+            //! the same as the actual one OR it has to be a new one
+            //! no other visitor uses
+            if (Number(currentId.value) != Number(data?.NumVisiteur)) {
+                alert("Un visiteur avec ce Numéro existe déjà.");
+                return;
+            }
+        }
+
+        let emittedData = {
+            IsEditMode: isEditMode.value,
+            PreviousId: Number(currentId.value),
+            VisitorData: data,
+        };
+
+        console.log("Emitting data to MainApp.vue", emittedData);
+        emits('act-on-visitor-query', emittedData);
     }
 
     /**
@@ -171,6 +209,29 @@
      */
     function ComputeCurrentVisitorData() {
         return currentVisitorData;
+    }
+
+    /**
+     * @param visitorData
+     * 
+     * @brief Returns if a visitor's data is valid or not
+     */
+    function IsVisitorValid(visitorData) {
+        let name = String(visitorData?.Nom);
+        let daysCount = Number(visitorData?.NombreJours);
+        let dailyFee = Number(visitorData?.TarifJournalier);
+
+        if (name == "") {
+            return false;
+        }
+        if (daysCount < 1 || daysCount > 365) {
+            return false;
+        }
+        if (dailyFee < 100 || dailyFee > 200_000) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

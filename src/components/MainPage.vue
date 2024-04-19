@@ -91,6 +91,17 @@
      * the changes
      */
     async function HandleActionOnVisitorEmitted(data) {
+        const bufferedVisitorData = data?.VisitorData;
+        let visitorData = {
+            NumVisiteur: bufferedVisitorData?.NumVisiteur,
+            Nom: bufferedVisitorData?.Nom,
+            NombreJours: bufferedVisitorData?.NombreJours,
+            TarifJournalier: bufferedVisitorData?.TarifJournalier,
+            ModeAjout: !(data?.IsEditMode),
+            IdPrecedent: data?.PreviousId
+        };
+
+        console.log("Visitor data about to be emitted:", visitorData);
         await SendFetchRequest("http://localhost/phpdir/exo10/server/actions.php", data);
         location.reload();
     }
