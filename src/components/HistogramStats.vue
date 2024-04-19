@@ -1,5 +1,6 @@
 <template>
-    <canvas id="myChart"></canvas>
+    <canvas id="bar-chart"></canvas>
+    <canvas id="pie-chart"></canvas>
 </template>
 
 <script setup>
@@ -22,29 +23,44 @@
     onMounted(() => {
         console.log("Props:", props.generalData);
 
-        const labels = ['Total', 'Min', 'Max'];
+        const labels = ['Total', 'Max', 'Min'];
         const data = {
             labels: labels,
             datasets: [{
                 label: 'Tarif',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: ['rgb(0, 128, 255)',
+                    'rgb(255, 165, 0)', 'rgb(144, 238, 144)'],
+                borderColor: ['rgb(0, 128, 255)',
+                    'rgb(255, 165, 0)', 'rgb(144, 238, 144)'],
                 data: [
                     CalculateTotal(),
-                    CalculateMinimum(),
-                    CalculateMaximum()
+                    CalculateMaximum(),
+                    CalculateMinimum()
                 ]
-            }]
+            }
+            ]
         };
-        const config = {
+
+        const barChartConfig = {
             type: 'bar',
             data: data,
             options: {}
-        }
+        };
+
+        const pieChartConfig = {
+            type: 'pie',
+            data: data,
+            options: {}
+        };
 
         new Chart(
-            document.getElementById("myChart"),
-            config
+            document.getElementById("bar-chart"),
+            barChartConfig
+        );
+
+        new Chart(
+            document.getElementById("pie-chart"),
+            pieChartConfig
         );
     });
 
@@ -118,4 +134,10 @@
     }
 </script>
 
-<style></style>
+<style>
+    canvas {
+        float: left;
+        max-height: 1000px;
+        max-width: 1000px;
+    }
+</style>
