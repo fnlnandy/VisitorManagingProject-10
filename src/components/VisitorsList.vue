@@ -13,10 +13,15 @@
                 <td>{{ visitor?.NombreJours }}</td>
                 <td>{{ visitor?.TarifJournalier }}</td>
                 <td>{{ visitor?.NombreJours * visitor?.TarifJournalier }}</td>
-                <td><img class="visitors-list-button" src="../assets/edit-button.png"
-                        @click="EditCurrent(visitor?.NumVisiteur)"></td>
-                <td><img class="visitors-list-button" src="../assets/delete-button.png"
-                        @click="DeleteCurrent(visitor?.NumVisiteur)"></td>
+                <td><button class="list-button blue-button" @click="EditCurrent(visitor?.NumVisiteur)">
+                        <p>Modifier</p>
+                        <img class="button-icon" width="24" height="24" src="../assets/edit-button.png">
+                    </button></td>
+                <td><button class="list-button red-button" @click="DeleteCurrent(visitor?.NumVisiteur)">
+                        <p>Supprimer</p>
+                        <img class="button-icon" width="24" height="24" src="../assets/delete-button.png">
+                    </button>
+                </td>
             </tr>
         </table>
     </div>
@@ -25,7 +30,13 @@
     it's an 'Add New' button -->
     <div class="magnified-button-wrapper">
         <button class="magnified-button" id="add-new-visitor-button" @click="AddNewVisitor">
-            +
+            <span class="magnified-button__text">Ajouter</span>
+            <span class="magnified-button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24"
+                    fill="none" class="svg">
+                    <line y2="19" y1="5" x2="12" x1="12"></line>
+                    <line y2="12" y1="12" x2="19" x1="5"></line>
+                </svg></span>
         </button>
     </div>
 
@@ -270,7 +281,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .list-table {
         border-radius: 10px;
         padding: 2px;
@@ -291,12 +302,6 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .visitors-list-button {
-        max-height: 24px;
-        max-width: 24px;
-        cursor: pointer;
-    }
-
     .list-row {
         background-color: white;
         transition: background-color 0.3s ease-in-out;
@@ -306,4 +311,121 @@
         cursor: pointer;
     }
 
+    .magnified-button {
+        position: relative;
+        width: 150px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        border: 1px solid #34974d;
+        background-color: #3aa856;
+    }
+
+    .magnified-button,
+    .magnified-button__icon,
+    .magnified-button__text {
+        transition: all 0.3s;
+    }
+
+    .magnified-button .magnified-button__text {
+        transform: translateX(30px);
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .magnified-button .magnified-button__icon {
+        position: absolute;
+        transform: translateX(109px);
+        height: 100%;
+        width: 34px;
+        background-color: #34974d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .magnified-button .svg {
+        width: 30px;
+        stroke: #fff;
+    }
+
+    .magnified-button:hover {
+        background: #34974d;
+    }
+
+    .magnified-button:hover .magnified-button__text {
+        color: transparent;
+    }
+
+    .magnified-button:hover .magnified-button__icon {
+        width: 130px;
+        transform: translateX(0);
+    }
+
+    .magnified-button:active .magnified-button__icon {
+        background-color: #2e8644;
+    }
+
+    .magnified-button:active {
+        border: 1px solid #2e8644;
+    }
+
+    .list-button {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        width: 100px;
+        height: 40px;
+        padding: 0px 20px;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    .blue-button {
+        background-color: rgb(38, 107, 255);
+        box-shadow: 5px 5px 0px rgb(32, 74, 212);
+    }
+
+    .red-button {
+        background-color: rgb(255, 38, 38);
+        box-shadow: 5px 5px 0px rgb(212, 65, 32);
+    }
+
+    .list-button p {
+        align-items: center;
+        color: white;
+        transition-duration: .3s;
+        background-color: transparent;
+        left: 0;
+        position: absolute;
+        margin-left: 5px;
+    }
+
+    .button-icon {
+        position: absolute;
+        right: 0;
+        transition-duration: .3s;
+        background-color: transparent;
+    }
+
+    .list-button:hover p {
+        color: transparent;
+    }
+
+    .list-button:hover .button-icon {
+        right: 43%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        transition-duration: .3s;
+    }
+
+    .list-button:active {
+        transform: translate(3px, 3px);
+        transition-duration: .3s;
+        box-shadow: 2px 2px 0px rgb(140, 32, 212);
+    }
 </style>
