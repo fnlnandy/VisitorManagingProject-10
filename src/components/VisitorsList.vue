@@ -18,7 +18,7 @@
                         <img class="button-icon" width="24" height="24" src="../assets/edit-button.png">
                     </button></td>
                 <td><button class="list-button red-button" @click="DeleteCurrent(visitor?.NumVisiteur)">
-                        <p>Supprimer</p>
+                        <p>Retirer</p>
                         <img class="button-icon" width="24" height="24" src="../assets/delete-button.png">
                     </button>
                 </td>
@@ -28,17 +28,10 @@
 
     <!-- Should be a big green button, to make it obvious that
     it's an 'Add New' button -->
-    <div class="magnified-button-wrapper">
-        <button class="magnified-button" id="add-new-visitor-button" @click="AddNewVisitor">
-            <span class="magnified-button__text">Ajouter</span>
-            <span class="magnified-button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"
-                    stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24"
-                    fill="none" class="svg">
-                    <line y2="19" y1="5" x2="12" x1="12"></line>
-                    <line y2="12" y1="12" x2="19" x1="5"></line>
-                </svg></span>
-        </button>
-    </div>
+    <button class="list-button green-button" @click="AddNewVisitor">
+        <p>Ajouter</p>
+        <img class="button-icon" width="24" height="24" src="../assets/add-button.png">
+    </button>
 
     <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()"
         :currentDataToFillIn="ComputeCurrentVisitorData()" />
@@ -311,70 +304,12 @@
         cursor: pointer;
     }
 
-    .magnified-button {
-        position: relative;
-        width: 150px;
-        height: 40px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        border: 1px solid #34974d;
-        background-color: #3aa856;
-    }
-
-    .magnified-button,
-    .magnified-button__icon,
-    .magnified-button__text {
-        transition: all 0.3s;
-    }
-
-    .magnified-button .magnified-button__text {
-        transform: translateX(30px);
-        color: #fff;
-        font-weight: 600;
-    }
-
-    .magnified-button .magnified-button__icon {
-        position: absolute;
-        transform: translateX(109px);
-        height: 100%;
-        width: 34px;
-        background-color: #34974d;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .magnified-button .svg {
-        width: 30px;
-        stroke: #fff;
-    }
-
-    .magnified-button:hover {
-        background: #34974d;
-    }
-
-    .magnified-button:hover .magnified-button__text {
-        color: transparent;
-    }
-
-    .magnified-button:hover .magnified-button__icon {
-        width: 130px;
-        transform: translateX(0);
-    }
-
-    .magnified-button:active .magnified-button__icon {
-        background-color: #2e8644;
-    }
-
-    .magnified-button:active {
-        border: 1px solid #2e8644;
-    }
-
     .list-button {
         position: relative;
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
         width: 100px;
         height: 40px;
         padding: 0px 20px;
@@ -394,6 +329,11 @@
         box-shadow: 5px 5px 0px rgb(212, 65, 32);
     }
 
+    .green-button {
+        background-color: rgb(17, 221, 27);
+        box-shadow: 5px 5px 0px rgb(11, 187, 52);
+    }
+
     .list-button p {
         align-items: center;
         color: white;
@@ -406,9 +346,11 @@
 
     .button-icon {
         position: absolute;
-        right: 0;
+        right: 5px;
         transition-duration: .3s;
         background-color: transparent;
+        width: 24px;
+        height: 24px;
     }
 
     .list-button:hover p {
