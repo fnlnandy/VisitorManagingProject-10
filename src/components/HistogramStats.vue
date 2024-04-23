@@ -45,6 +45,13 @@
             type: 'bar',
             data: data,
             options: {
+                responsive: false,
+                aspectRatio: 2,
+                scales: {
+                    y: {
+                        stacked: true // Optionally, stack the bars if needed
+                    }
+                },
                 plugins: {
                     legend: {
                         labels: {
@@ -63,6 +70,7 @@
             type: 'pie',
             data: data,
             options: {
+                responsive: false,
                 plugins: {
                     legend: {
                         labels: {
@@ -161,8 +169,6 @@
 <style scoped>
     canvas {
         float: left;
-        max-height: 1000px;
-        max-width: 1000px;
         background-color: #2d2d2d;
         margin-left: 10px;
         margin-right: 10px;
@@ -170,5 +176,15 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 5px 5px 0px #171717;
+    }
+
+    #bar-chart {
+        width: 600px;
+        height: 600px;
+    }
+
+    #pie-chart {
+        width: 300px;
+        height: 300px;
     }
 </style>
