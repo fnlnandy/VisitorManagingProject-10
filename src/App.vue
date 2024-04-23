@@ -27,7 +27,7 @@
 
     body {
         color: rgb(0, 31, 64);
-        background-image: url("assets/background.jpg");
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("assets/background.jpg");
         background-size: cover;
     }
 </style>

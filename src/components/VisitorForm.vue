@@ -1,17 +1,31 @@
 <template>
     <!-- The form about the Visitor's data -->
-    <form @submit.prevent.stop="CheckAndEmitData" id="visitor-form" method="post">
-        <label for="visitor-id-field">Num. Visiteur:</label>
-        <input v-model="formIdField" id="visitor-id-field" type="number" min="1" required>
-        <label for="visitor-name-field">Nom:</label>
-        <input v-model="formNameField" id="visitor-name-field" type="text" maxlength="100" required>
-        <label for="visitor-days-count-field">Nombre de jours:</label>
-        <input v-model="formDaysCountField" id="visitor-days-count-field" type="number" min="1" max="365" required>
-        <label for="visitor-daily-fee-field">Tarif journalier:</label>
-        <input v-model="formDailyFeeField" id="visitor-daily-fee-field" type="number" min="100" max="200000" required>
+    <form @submit.prevent.stop="CheckAndEmitData" method="post" class="visitor-form">
+        <label>
+            <input class="input" v-model="formIdField" id="visitor-id-field" type="number" min="1" required>
+            <span>Num. Visiteur:</span>
+        </label>
 
-        <input id="visitor-form-submit-button" type="submit">
-        <input type="reset" @click.prevent="ClearFormCallback">
+        <label>
+            <input class="input" v-model="formNameField" id="visitor-name-field" type="text" maxlength="100" required>
+            <span>Nom:</span>
+        </label>
+
+        <label>
+            <input class="input" v-model="formDaysCountField" id="visitor-days-count-field" type="number" min="1"
+                max="365" required>
+            <span>Nombre de jours:</span>
+        </label>
+
+        <label>
+            <input class="input" v-model="formDailyFeeField" id="visitor-daily-fee-field" type="number" min="100"
+                max="200000" required>
+            <span>Tarif journalier:</span>
+        </label>
+
+
+        <input class="submit" type="submit">
+        <input class="submit" type="reset" @click.prevent="ClearFormCallback">
     </form>
 </template>
 
@@ -171,4 +185,73 @@
     }
 </script>
 
-<style></style>
+<style scoped>
+    .visitor-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 350px;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: #2d2d2d;
+        color: #fff;
+        box-shadow: 2px 2px 0px #171717;
+    }
+
+
+    .visitor-form label {
+        position: relative;
+    }
+
+    .visitor-form label .input {
+        background-color: #333;
+        color: #fff;
+        width: 100%;
+        padding: 20px 0px 0px 10px;
+        outline: 0;
+        border: 1px solid rgba(105, 105, 105, 0.397);
+        border-radius: 10px;
+    }
+
+    .visitor-form label .input+span {
+        color: rgba(255, 255, 255, 0.5);
+        position: absolute;
+        left: 10px;
+        top: 0px;
+        font-size: 0.9em;
+        cursor: text;
+        transition: 0.3s ease;
+    }
+
+    .visitor-form label .input:placeholder-shown+span {
+        top: 12.5px;
+        font-size: 0.9em;
+    }
+
+    .visitor-form label .input:focus+span,
+    .visitor-form label .input:valid+span {
+        color: #00bfff;
+        top: 0px;
+        font-size: 0.7em;
+        font-weight: 600;
+    }
+
+    .input {
+        font-size: medium;
+    }
+
+    .submit {
+        border: none;
+        outline: none;
+        padding: 10px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transform: .3s ease;
+        background-color: #00bfff;
+    }
+
+    .submit:hover {
+        background-color: #00bfff96;
+    }
+</style>

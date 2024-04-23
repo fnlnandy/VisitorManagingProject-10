@@ -24,17 +24,17 @@
                 </td>
             </tr>
         </table>
+        <!-- Should be a big green button, to make it obvious that
+        it's an 'Add New' button -->
+        <button class="list-button green-button center-button" @click="AddNewVisitor">
+            <p>Ajouter</p>
+            <img class="button-icon" width="24" height="24" src="../assets/add-button.png">
+        </button>
     </div>
 
-    <!-- Should be a big green button, to make it obvious that
-    it's an 'Add New' button -->
-    <button class="list-button green-button" @click="AddNewVisitor">
-        <p>Ajouter</p>
-        <img class="button-icon" width="24" height="24" src="../assets/add-button.png">
-    </button>
 
-    <VisitorForm @form-data-emitted="HandleEmittedFormData" v-if="showForm" :currentId="ComputeCurrentId()"
-        :currentDataToFillIn="ComputeCurrentVisitorData()" />
+    <VisitorForm class="visitor-form" @form-data-emitted="HandleEmittedFormData" v-if="showForm"
+        :currentId="ComputeCurrentId()" :currentDataToFillIn="ComputeCurrentVisitorData()" />
 </template>
 
 <script setup>
@@ -275,10 +275,13 @@
 </script>
 
 <style scoped>
+
     .list-table {
         border-radius: 10px;
         padding: 2px;
-        background-color: rgb(223, 223, 223);
+        background-color: #2d2d2d;
+        box-shadow: 5px 5px 0px #171717;
+        margin-bottom: 10px;
     }
 
     .list-table * {
@@ -288,7 +291,8 @@
         justify-content: center;
         align-items: center;
         align-content: center;
-        background-color: white;
+        background-color: #333;
+        color: white;
     }
 
     .list-table th {
@@ -296,8 +300,8 @@
     }
 
     .list-row {
-        background-color: white;
         transition: background-color 0.3s ease-in-out;
+        text-align: center;
     }
 
     .list-row:hover {
@@ -332,6 +336,12 @@
     .green-button {
         background-color: rgb(17, 221, 27);
         box-shadow: 5px 5px 0px rgb(11, 187, 52);
+    }
+
+    .center-button {
+        position: relative;
+        left: 25%;
+        right: 25%;
     }
 
     .list-button p {
@@ -369,5 +379,11 @@
         transform: translate(3px, 3px);
         transition-duration: .3s;
         box-shadow: 2px 2px 0px rgb(140, 32, 212);
+    }
+
+    .visitor-form {
+        position: fixed;
+        right: 100px;
+        top: 20px;
     }
 </style>

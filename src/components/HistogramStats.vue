@@ -44,13 +44,37 @@
         const barChartConfig = {
             type: 'bar',
             data: data,
-            options: {}
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        titleColor: 'white',
+                        bodyColor: 'white'
+                    }
+                }
+            }
         };
 
         const pieChartConfig = {
             type: 'pie',
             data: data,
-            options: {}
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        titleColor: 'white',
+                        bodyColor: 'white'
+                    }
+                }
+            }
         };
 
         new Chart(
@@ -139,5 +163,11 @@
         float: left;
         max-height: 1000px;
         max-width: 1000px;
+        background-color: #2d2d2d;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 5px 5px 0px #171717;
     }
 </style>
