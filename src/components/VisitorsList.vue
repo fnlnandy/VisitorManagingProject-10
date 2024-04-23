@@ -383,7 +383,7 @@
 
     .visitor-form {
         position: fixed;
-        right: 100px;
-        top: 20px;
+        right: 20px;
+        top: 10px;
     }
 </style>

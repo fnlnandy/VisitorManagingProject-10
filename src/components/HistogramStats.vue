@@ -166,6 +166,7 @@
         background-color: #2d2d2d;
         margin-left: 10px;
         margin-right: 10px;
+        margin-bottom: 20px;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 5px 5px 0px #171717;

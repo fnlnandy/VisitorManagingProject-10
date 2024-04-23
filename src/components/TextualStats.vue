@@ -2,6 +2,7 @@
     <!-- Textual stats that should be under the table, could
     be put at an absolute position -->
     <div class="textual-stats-wrapper">
+        <p><u>Statistiques:</u></p>
         <p class="textual-stats">Tarif total: {{ totalFees }}</p>
         <p class="textual-stats">Tarif minimal: {{ minimalFees }}</p>
         <p class="textual-stats">Tarif maximal: {{ maximalFees }}</p>
@@ -102,4 +103,14 @@
     }
 </script>
 
-<style></style>
+<style>
+    .textual-stats-wrapper {
+        background-color: #2d2d2d;
+        color: white;
+        margin: 10px;
+        width: fit-content;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 5px 5px 0px #171717;
+    }
+</style>
