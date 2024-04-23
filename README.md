@@ -5,6 +5,10 @@ This is just a web applicaton, that is a scholar project, that manages visitors 
 ## Screenshot(s)
 ![Current state of the project](screenshots/001.png)
 
+## Credits
+* [Background image by macrovector on Freepik.](https://www.freepik.com/free-vector/guide-sightseeing-background-with-tourist-attraction-symbols-flat-vector-illsutration_41684701.htm#fromView=search&page=1&position=28&uuid=299cfb93-5e12-4388-ab90-c91e1cbce89d)
+* [SVG Repo for the buttons icons etc...](svgrepo.com)
+
 ## Project setup
 ```
 npm install

@@ -1,6 +1,6 @@
 <template>
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <MainPage msg="Welcome to Your Vue.js App" />
+    <MainPage id="main-page" />
 </template>
 
 <script>
@@ -22,11 +22,12 @@
 
 <style>
     #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        color: rgb(0, 31, 64);
+        background-image: url("assets/background.jpg");
+        background-size: cover;
     }
 </style>

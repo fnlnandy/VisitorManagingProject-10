@@ -1,20 +1,22 @@
 <template>
     <!-- Where the base data for each visitor should be visible -->
     <div class="list-table-wrapper">
-        <table border="1" class="list-table" id="visitors-list-table">
+        <table border="1" class="list-table">
             <tr>
                 <th>Nom</th>
                 <th>Nombre de jours</th>
                 <th>Tarif journalier</th>
                 <th>Tarif total (TJ * NJ)</th>
             </tr>
-            <tr v-for="visitor in props.visitorsArray.value" :key="visitor?.NumVisiteur">
+            <tr v-for="visitor in props.visitorsArray.value" :key="visitor?.NumVisiteur" class="list-row">
                 <td>{{ visitor?.Nom }}</td>
                 <td>{{ visitor?.NombreJours }}</td>
                 <td>{{ visitor?.TarifJournalier }}</td>
                 <td>{{ visitor?.NombreJours * visitor?.TarifJournalier }}</td>
-                <td @click="EditCurrent(visitor?.NumVisiteur)">Edit button</td>
-                <td @click="DeleteCurrent(visitor?.NumVisiteur)">Delete button</td>
+                <td><img class="visitors-list-button" src="../assets/edit-button.png"
+                        @click="EditCurrent(visitor?.NumVisiteur)"></td>
+                <td><img class="visitors-list-button" src="../assets/delete-button.png"
+                        @click="DeleteCurrent(visitor?.NumVisiteur)"></td>
             </tr>
         </table>
     </div>
@@ -268,4 +270,40 @@
     }
 </script>
 
-<style></style>
+<style>
+    .list-table {
+        border-radius: 10px;
+        padding: 2px;
+        background-color: rgb(223, 223, 223);
+    }
+
+    .list-table * {
+        padding: 5px;
+        border-radius: 5px;
+        color: rgb(0, 34, 63);
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        background-color: white;
+    }
+
+    .list-table th {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .visitors-list-button {
+        max-height: 24px;
+        max-width: 24px;
+        cursor: pointer;
+    }
+
+    .list-row {
+        background-color: white;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .list-row:hover {
+        cursor: pointer;
+    }
+
+</style>

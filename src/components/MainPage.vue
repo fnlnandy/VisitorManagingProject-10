@@ -124,16 +124,16 @@
 </script>
 
 <template>
-    <div class="main-app">
+    <div v-if="loadedData" class="main-app">
         <VisitorsList v-if="loadedData" :visitorsArray="ComputeFetchedData()"
             @act-on-visitor-query="HandleActionOnVisitorEmitted" @delete-visitor-query="HandleDeletingVisitorEmitted" />
         <TextualStats v-if="loadedData" :fetchedData="ComputeFetchedData()" />
-        <HistogramStats v-if="loadedData" :generalData="fetchedData" />
+        <HistogramStats v-if="loadedData" :generalData="fetchedData" class="histogram" />
     </div>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
     h3 {
         margin: 40px 0 0;
     }
@@ -150,5 +150,9 @@
 
     a {
         color: #42b983;
+    }
+
+    .histogram * {
+        background: transparent;
     }
 </style>

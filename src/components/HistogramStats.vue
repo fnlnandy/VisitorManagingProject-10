@@ -134,7 +134,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     canvas {
         float: left;
         max-height: 1000px;
